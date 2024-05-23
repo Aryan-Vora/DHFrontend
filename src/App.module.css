@@ -56,12 +56,16 @@
   background-color: #0056b3;
 }
 
+.loading {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
 .response {
   background-color: white;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
   max-width: 500px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

@@ -5,9 +5,27 @@ function App() {
   const [food, setFood] = useState("");
   const [response, setResponse] = useState(null);
   const [daalSaagResponse, setDaalSaagResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Loading.");
+
+  useEffect(() => {
+    let loadingInterval;
+    if (loading) {
+      loadingInterval = setInterval(() => {
+        setLoadingMessage((prev) => {
+          if (prev === "Loading.") return "Loading..";
+          if (prev === "Loading..") return "Loading...";
+          return "Loading.";
+        });
+      }, 500);
+    }
+    return () => clearInterval(loadingInterval);
+  }, [loading]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setResponse(null); // Clear previous response
     const res = await fetch("https://dhscraper.onrender.com/check_food", {
       method: "POST",
       headers: {
@@ -17,6 +35,7 @@ function App() {
     });
     const data = await res.json();
     setResponse(data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -52,6 +71,7 @@ function App() {
             Check Food
           </button>
         </form>
+        {loading && <div className={styles.loading}>{loadingMessage}</div>}
         {response && (
           <div className={styles.response}>
             <h2>Food Availability</h2>
@@ -62,9 +82,9 @@ function App() {
       <div className={styles.section}>
         <h2>Best Menu Options</h2>
         <p>This section will provide the best menu options.</p>
-      </div>{" "}
+      </div>
       {daalSaagResponse && (
-        <div className={styles.response}>
+        <div className={styles.section}>
           <h2>Daal Saag Availability</h2>
           <pre>{JSON.stringify(daalSaagResponse, null, 2)}</pre>
         </div>
