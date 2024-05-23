@@ -7,16 +7,13 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch(
-      "https://your-backend-url.onrender.com/check_food",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({food}),
-      }
-    );
+    const res = await fetch("https://dhscraper.onrender.com/check_food", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({food}),
+    });
     const data = await res.json();
     setResponse(data);
   };
