@@ -17,9 +17,9 @@ function App() {
     setFood(value);
 
     if (value.length > 0) {
-      const filteredSuggestions = items.filter((item) =>
-        item.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredSuggestions = items
+        .filter((item) => item.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 5); // This will limit the suggestions to the first 5
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
@@ -52,13 +52,26 @@ function App() {
         body: JSON.stringify({food}),
       });
       const data = await res.json();
-      setResponse(data);
+      const orderedData = {
+        name: data.name,
+        ...Object.keys(data)
+          .filter((key) => key !== "name")
+          .reduce((obj, key) => {
+            obj[key] = {
+              Breakfast: data[key].Breakfast,
+              Lunch: data[key].Lunch,
+              Dinner: data[key].Dinner,
+              "Late Night": data[key]["Late Night"] || false,
+            };
+            return obj;
+          }, {}),
+      };
+      setResponse(orderedData);
     } catch (error) {
       console.error("Error fetching food data:", error);
     }
     setLoading(false);
   };
-
   useEffect(() => {
     const fetchDaalSaag = async () => {
       try {
@@ -92,9 +105,8 @@ function App() {
       }
       setLoadingBestFood(false);
     };
-
-    fetchDaalSaag();
     fetchBestFood();
+    fetchDaalSaag();
   }, []);
   useEffect(() => {
     // Load items from items.txt
@@ -129,7 +141,7 @@ function App() {
         {response && (
           <div className={styles.response}>
             <h2>Food Availability</h2>
-            <pre>{JSON.stringify(response, null, 2)}</pre>
+            <pre>{JSON.stringify(response, null, 1)}</pre>
           </div>
         )}
       </div>
