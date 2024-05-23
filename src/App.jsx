@@ -100,7 +100,7 @@ function App() {
     // Load items from items.txt
     fetch("items.txt")
       .then((response) => response.text())
-      .then((data) => setItems(data.split("\n")));
+      .then((data) => setItems(data.split("\n").map((item) => item.trim())));
   }, []);
   return (
     <div className={styles.container}>
