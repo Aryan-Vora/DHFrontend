@@ -5,6 +5,7 @@ function App() {
   const [food, setFood] = useState("");
   const [response, setResponse] = useState(null);
   const [daalSaagResponse, setDaalSaagResponse] = useState(null);
+  const [bestFoodResponse, setBestFoodResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading.");
 
@@ -53,7 +54,20 @@ function App() {
 
     fetchDaalSaag();
   }, []);
+  useEffect(() => {
+    const fetchBestFood = async () => {
+      const res = await fetch("https://dhscraper.onrender.com/best_food", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      setBestFoodResponse(data);
+    };
 
+    fetchBestFood();
+  }, []);
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Food Availability Checker</h1>
@@ -79,10 +93,12 @@ function App() {
           </div>
         )}
       </div>
-      <div className={styles.section}>
-        <h2>Best Menu Options</h2>
-        <p>This section will provide the best menu options.</p>
-      </div>
+      {bestFoodResponse && (
+        <div className={styles.section}>
+          <h2>Best Foods</h2>
+          <pre>{JSON.stringify(bestFoodResponse, null, 2)}</pre>
+        </div>
+      )}
       {daalSaagResponse && (
         <div className={styles.section}>
           <h2>Daal Saag Availability</h2>
