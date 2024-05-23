@@ -1,9 +1,10 @@
-// src/App.jsx
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import styles from "./App.module.css";
 
 function App() {
   const [food, setFood] = useState("");
   const [response, setResponse] = useState(null);
+  const [daalSaagResponse, setDaalSaagResponse] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,21 +19,54 @@ function App() {
     setResponse(data);
   };
 
+  useEffect(() => {
+    const fetchDaalSaag = async () => {
+      const res = await fetch("https://dhscraper.onrender.com/check_food", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({food: "Daal Saag"}),
+      });
+      const data = await res.json();
+      setDaalSaagResponse(data);
+    };
+
+    fetchDaalSaag();
+  }, []);
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={food}
-          onChange={(e) => setFood(e.target.value)}
-          placeholder="Enter food name"
-        />
-        <button type="submit">Check Food</button>
-      </form>
-      {response && (
-        <div>
-          <h2>Food Availability</h2>
-          <pre>{JSON.stringify(response, null, 2)}</pre>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Food Availability Checker</h1>
+      <div className={styles.section}>
+        <h2>Search Food</h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            type="text"
+            value={food}
+            onChange={(e) => setFood(e.target.value)}
+            placeholder="Enter food name"
+            className={styles.input}
+          />
+          <button type="submit" className={styles.button}>
+            Check Food
+          </button>
+        </form>
+        {response && (
+          <div className={styles.response}>
+            <h2>Food Availability</h2>
+            <pre>{JSON.stringify(response, null, 2)}</pre>
+          </div>
+        )}
+      </div>
+      <div className={styles.section}>
+        <h2>Best Menu Options</h2>
+        <p>This section will provide the best menu options.</p>
+      </div>{" "}
+      {daalSaagResponse && (
+        <div className={styles.response}>
+          <h2>Daal Saag Availability</h2>
+          <pre>{JSON.stringify(daalSaagResponse, null, 2)}</pre>
         </div>
       )}
     </div>
