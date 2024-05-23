@@ -101,7 +101,6 @@ function App() {
     fetch("items.txt")
       .then((response) => response.text())
       .then((data) => setItems(data.split("\n")));
-    console.log(items);
   }, []);
   return (
     <div className={styles.container}>
