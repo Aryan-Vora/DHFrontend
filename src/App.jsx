@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import {useState} from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [food, setFood] = useState("");
+  const [response, setResponse] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const res = await fetch(
+      "https://your-backend-url.onrender.com/check_food",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({food}),
+      }
+    );
+    const data = await res.json();
+    setResponse(data);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={food}
+          onChange={(e) => setFood(e.target.value)}
+          placeholder="Enter food name"
+        />
+        <button type="submit">Check Food</button>
+      </form>
+      {response && (
+        <div>
+          <h2>Food Availability</h2>
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
