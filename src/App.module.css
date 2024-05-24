@@ -63,3 +63,20 @@
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.diningHall {
+  margin-bottom: 20px;
+}
+
+.mealsList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.mealsList li::before {
+  content: "•";
+  color: black;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
