@@ -75,12 +75,6 @@ function App() {
         requestBody={{ food: "Daal Saag" }}
         title="Daal Saag Availability"
       />
-
-      <Section
-        url="https://dhscraper.onrender.com/best_food"
-        requestType="GET"
-        title="Best Foods"
-      />
     </div>
   );
 }
