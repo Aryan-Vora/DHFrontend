@@ -16,3 +16,5 @@ You can access the website here: [Dining Hall Scraper](https://dhscraper.vercel.
 - **Frontend**: Vite, React
 - **Backend**: Python (Flask)
 - **Deployment**: Vercel
+
+The backend repository is here [Backend Repo](https://github.com/RajNadkarni/DHScraper)
