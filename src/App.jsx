@@ -72,8 +72,8 @@ function App() {
       <Section
         url="https://dhscraper.onrender.com/check_food"
         requestType="POST"
-        requestBody={{ food: "Daal Saag" }}
-        title="Daal Saag Availability"
+        requestBody={{ food: "Dal Saag" }}
+        title="Dal Saag Availability"
       />
     </div>
   );
